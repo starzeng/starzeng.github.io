@@ -1,11 +1,79 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>欢迎来到StarZeng的主页</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StarZeng · GitHub</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#11162a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#6366f1;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+    }
+    html,body{height:100%;margin:0}
+    body{
+      background:radial-gradient(600px 300px at 20% 10%, rgba(99,102,241,.12), transparent 40%),
+                 linear-gradient(180deg,#0b1020,#050814);
+      display:flex;align-items:center;justify-content:center;color:var(--text)
+    }
+    .card{
+      width:360px;max-width:90vw;
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      padding:28px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.45)
+    }
+    .avatar{
+      width:96px;height:96px;border-radius:50%;
+      margin:0 auto 16px auto;
+      border:2px solid rgba(255,255,255,.15)
+    }
+    h1{margin:0;font-size:20px;font-weight:600}
+    .username{color:var(--muted);font-size:14px;margin-top:4px}
+    .bio{margin:14px 0 18px 0;font-size:14px;line-height:1.6;color:var(--muted)}
+    .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:18px}
+    a{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:10px;
+      background:rgba(99,102,241,.15);
+      color:#e0e7ff;
+      text-decoration:none;
+      font-weight:500
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello，我是 StarZeng！</h1>
-  <p>AI</p>
+  <div class="card">
+    <img class="avatar" id="avatar" />
+    <h1 id="name"></h1>
+    <div class="username" id="login"></div>
+    <p class="bio" id="bio"></p>
+    <div class="meta">
+      <span id="repos"></span>
+      <span id="followers"></span>
+    </div>
+    <a id="profile" target="_blank">GitHub Profile</a>
+  </div>
+
+  <script>
+    const user = 'starzeng';
+    fetch(`https://api.github.com/users/${user}`)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('avatar').src = d.avatar_url;
+        document.getElementById('name').textContent = d.name || d.login;
+        document.getElementById('login').textContent = '@' + d.login;
+        document.getElementById('bio').textContent = d.bio || '';
+        document.getElementById('repos').textContent = d.public_repos + ' repos';
+        document.getElementById('followers').textContent = d.followers + ' followers';
+        document.getElementById('profile').href = d.html_url;
+      });
+  </script>
 </body>
 </html>
